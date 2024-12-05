@@ -9,7 +9,7 @@ public class BackGround {
 
     private int sort = 1;//判断是第几关
 
-    private boolean flag = false;//判断场景是否是最后一个场景
+    private boolean flag ;//判断场景是否是最后一个场景
 
     private List<Obstacle> obstacleList = new ArrayList<Obstacle>();//结构
 
@@ -30,7 +30,7 @@ public class BackGround {
 
     public BackGround(int sort, boolean flag) {
         this.sort = sort;
-        setFlag(flag);
+        this.flag = flag;
         //给对应关卡赋值相应的背景图片
         if (flag) {
             bgImage = StaticValue.bg2;
@@ -51,7 +51,7 @@ public class BackGround {
                 }
             }
             //加载砖块
-            for (int x = 200; x < 500; x += 30) {
+            for (int x = 200; x < 570; x += 30) {
                 if (x == 290 || x == 320) {
                     obstacleList.add(new Obstacle(x, 300, 5, this));
                 } else {
@@ -111,31 +111,31 @@ public class BackGround {
                 }
             }
             //绘制砖块C
-            obstacleList.add(new Obstacle(300, 330, 5, this));
+            obstacleList.add(new Obstacle(300, 330, 4, this));
             //绘制砖块B,E,G
             for (int i = 270; i <= 330; i += 30) {
                 if (i == 270 || i == 330) {
-                    obstacleList.add(new Obstacle(i, 360, 5, this));
-                } else {
                     obstacleList.add(new Obstacle(i, 360, 4, this));
+                } else {
+                    obstacleList.add(new Obstacle(i, 360, 5, this));
                 }
             }
 
             //绘制砖块A,D,F,H,I
             for (int i = 240; i <= 360; i += 30) {
                 if (i == 240 || i == 360) {
-                    obstacleList.add(new Obstacle(i, 390, 5, this));
-                } else {
                     obstacleList.add(new Obstacle(i, 390, 4, this));
+                } else {
+                    obstacleList.add(new Obstacle(i, 390, 5, this));
                 }
             }
 
             //绘制妨碍1砖块
-            obstacleList.add(new Obstacle(240, 300, 5, this));
+            obstacleList.add(new Obstacle(240, 300, 4, this));
 
             //绘制空1-4砖块
             for (int i = 360; i <= 540; i += 60) {
-                obstacleList.add(new Obstacle(i, 270, 4, this));
+                obstacleList.add(new Obstacle(i, 270, 5, this));
             }
             //绘制第二关的第一个食人花敌人
             enemyList.add(new Enemy(75,420,true,2,328,418,this));
@@ -165,7 +165,7 @@ public class BackGround {
             int temp = 290;
             for (int i = 390; i >= 270; i -= 30) {
                 for (int j = temp; j <= 410; j += 30) {
-                    obstacleList.add(new Obstacle(j, i, 4, this));
+                    obstacleList.add(new Obstacle(j, i, 5, this));
                 }
                 temp += 30;
             }
@@ -173,7 +173,7 @@ public class BackGround {
             temp = 60;
             for (int i = 390; i >= 360; i -= 30) {
                 for (int j = temp; j <= 90; j += 30) {
-                    obstacleList.add(new Obstacle(j, i, 4, this));
+                    obstacleList.add(new Obstacle(j, i, 5, this));
                 }
                 temp += 30;
             }

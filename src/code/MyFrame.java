@@ -169,27 +169,27 @@ public class MyFrame extends JFrame implements Runnable, KeyListener {
         // 绘制背景图像到缓冲区
         graphics.drawImage(backGround.getBgImage(), 0, 0, this);//未更改
 
-        // 绘制马里奥到缓冲区
-        graphics.drawImage(mario.getShow(), mario.getX(), mario.getY(), this);
-        //N1绘制敌人 添加绘制敌人的代码，放在绘制马里奥的代码之后，两者并列即可
+
+        //绘制敌人 添加绘制敌人的代码，放在绘制马里奥的代码之后，两者并列即可
         for (Enemy e : backGround.getEnemyList()) {
             graphics.drawImage(e.getShow(),e.getX(),e.getY(),this);
-        }
+        } //旗杆和城堡
+        graphics.drawImage(backGround.getGan(), 500, 220, this);
+        graphics.drawImage(backGround.getTower(), 620, 270, this);
         // 绘制所有障碍物到缓冲区
         for (Obstacle obstacle : backGround.getObstacleList()) {
             graphics.drawImage(obstacle.getShow(), obstacle.getX(), obstacle.getY(), this);
         }
+     // 绘制马里奥到缓冲区
+        graphics.drawImage(mario.getShow(), mario.getX(), mario.getY(), this);
 
 
 
-        //旗杆和城堡
-        graphics.drawImage(backGround.getGan(), 500, 220, this);
-        graphics.drawImage(backGround.getTower(), 620, 270, this);
 
         //显示文字
         graphics.setColor(Color.BLACK);
-        graphics.setFont(new Font("Times New Roman", Font.BOLD, 30));
-        graphics.drawString("Score: " + mario.getScore(), 300, 100);
+        graphics.setFont(new Font("黑体", Font.BOLD, 30));
+        graphics.drawString("当前的积分是：" + mario.getScore(), 300, 100);
 
         // 将缓冲区的内容绘制到屏幕上
         g.drawImage(offScreenImage, 0, 0, this);
