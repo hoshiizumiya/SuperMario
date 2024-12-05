@@ -59,9 +59,9 @@ public class MyFrame extends JFrame implements Runnable, KeyListener {
         // 初始重绘
         repaint();
 
-        // 初始化背景类和马里奥的位置,不涉及背景切换逻辑
+        // 初始化背景类和马里奥的位置和添加背景
         for (int i = 1; i <= 3; i++) {
-            backGround = new BackGround(i, i == 3 ? true : false);//背景如何切换？
+            BackGround backGround = new BackGround(i, i == 3);
             allBg.add(backGround);
         }
         backGround = allBg.get(0);
@@ -92,7 +92,6 @@ public class MyFrame extends JFrame implements Runnable, KeyListener {
         if (e.getKeyCode() == 38) {//上
             mario.jump();
         }
-        //下键？
     }
 
     //左上右下,分别是37,38,39,40
@@ -168,7 +167,7 @@ public class MyFrame extends JFrame implements Runnable, KeyListener {
         graphics.fillRect(0, 0, 800, 600);
 
         // 绘制背景图像到缓冲区
-        graphics.drawImage(StaticValue.bg, 0, 0, this);
+        graphics.drawImage(backGround.getBgImage(), 0, 0, this);//未更改
 
         // 绘制马里奥到缓冲区
         graphics.drawImage(mario.getShow(), mario.getX(), mario.getY(), this);
