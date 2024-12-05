@@ -28,7 +28,7 @@ public class MyFrame extends JFrame implements Runnable, KeyListener {
 
     public static void main(String[] args) {
         // 创建并启动游戏窗口
-        new MyFrame();//old:MyFrame myFrame = new MyFrame();now is Ok
+        new MyFrame();
     }
 
     public MyFrame() {
@@ -67,7 +67,7 @@ public class MyFrame extends JFrame implements Runnable, KeyListener {
         backGround = allBg.get(0);
         mario = new Mario(5, 375);
         mario.setBackGround(backGround);
-        // all线程启动处
+        // 当前的线程启动处
         thread.start();
         try{
             new Music();

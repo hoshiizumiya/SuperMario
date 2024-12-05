@@ -64,10 +64,10 @@ public class Mario implements Runnable {
                 {
                     xSpeed = 0;
                     System.out.println("x: " + x + ", y: " + y + ", status: " + status + ", xSpeed: " + xSpeed + ", ySpeed: " + ySpeed);
-                    if (y < 395) //395
+                    if (y < 395)
                     {
                         this.y += 5;
-                        status = "jump--Right";//此处含有jump，莫非是检测到jump后fail()还在追我？
+                        status = "jump--Right";
                     } else {//395
                         this.y = 395;
                         status = "stop--Right";
@@ -77,7 +77,7 @@ public class Mario implements Runnable {
                 for (int i = 0; i < backGround.getObstacleList().size(); i++) {
                     Obstacle ob = backGround.getObstacleList().get(i);
                     // 判断是否在障碍物上
-                    if (this.y + 25 == ob.getY() && (this.x + 25 > ob.getX() && ob.getX() + 30 > this.x)) {
+                    if (this.y + 25 == ob.getY() && this.x + 25 > ob.getX() && ob.getX() + 30 > this.x) {
                         onObstacle = true;
                     }
                     // 判断是否可以向右移动
@@ -251,7 +251,7 @@ public class Mario implements Runnable {
 
     // 下落
     public void fail() {
-        this.ySpeed = 10;//10
+        this.ySpeed = 10;
         if (status.contains("Left")) {
             status = "jump--Left";
         } else {
