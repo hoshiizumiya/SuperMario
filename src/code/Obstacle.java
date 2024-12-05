@@ -12,18 +12,18 @@ public class Obstacle implements Runnable//封装，使用private进行修饰,�
 
     //实现 Runnable 接口:定义当前的场景对象
     private BackGround bg = null;
-    //定义一个线程对象
-    private Thread thread = new Thread(this);
 
     public Obstacle(int x, int y, int type, BackGround bg)//全部参数构造
     {
         this.x = x;
         this.y = y;
         this.type = type;
-        this.bg = bg;
         this.show = StaticValue.obstaclePictures.get(type);//类型
-        if (type == 8) //此处的 8，要根据自己代码的障碍物类型自行判断编号是几
+        if (this.type == 8)
         {
+            this.bg = bg;
+            //定义一个线程对象
+            Thread thread = new Thread(this);
             thread.start();
         }
     }
@@ -32,17 +32,16 @@ public class Obstacle implements Runnable//封装，使用private进行修饰,�
     {
     }
 
-    public void Thread() {
-    }
-
     @Override
     public void run() {
-        while (true) {
-            if (this.bg.isReach()) {
+        while (!Thread.currentThread().isInterrupted()) {
+            if (this.bg != null && this.bg.getReach())//获取Mario到达旗的x信号，旗开始自动下降（非Mario的y，为对应bg=8的y）
+            {
                 if (this.y < 374) {
                     this.y += 5;
-                } else {
-                    this.bg.setBase(true);
+                } else //到底完成，返回结果，让Mario开始向右移动
+                {
+                    this.bg.setBaseFlag(true);
                 }
             }
             try {

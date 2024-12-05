@@ -33,24 +33,29 @@ public class Mario implements Runnable {
             boolean canLeft = true;
             boolean onObstacle = false;
 
-            //判断马里奥是否到达旗杆位置
-            if (backGround.isFlag() && this.x >= 500) {
-                this.backGround.setReach(true);
-                //判断旗子是否下落完成
-                if (this.backGround.isBase()) {
+            //判断马里奥是否到达旗杆的x位置，Logical Problem!
+            if (backGround.getFlag() && this.x >= 500)//条件：第三关（true)且达到位置
+            {
+                this.backGround.setReach(true);//发出到达信号给旗子
+                //Mario下落至完成的切换
+                if (this.backGround.getBaseFlag()) //旗下落完成，Mario开始自动向右平移
+                {
                     status = "move--Right";
                     if (x < 690) {
                         x += 5;
                     }else {
-                        isOK = true;
+                        isOK = true;//Game Over
                     }
-                }else {
+                }else //Mario开始随旗下落
+                {
+                    System.out.println("x: " + x + ", y: " + y + ", status: " + status + ", xSpeed: " + xSpeed + ", ySpeed: " + ySpeed);
+
+                    xSpeed = 0;
                     if (y < 395) {//395
-                        xSpeed = 0;
                         this.y += 5;
-                        status = "jump--Right";
+                        status = "jump--Right";//此处含有jump，莫非是检测到jump后fail()还在追我？
                     }
-                    if (y > 395) {//395
+                    else {//395
                         this.y = 395;
                         status = "stop--Right";
                     }
@@ -75,7 +80,7 @@ public class Mario implements Runnable {
                     if ((ob.getY() >= this.y - 30 && ob.getY() <= this.y - 20) && (ob.getX() > this.x - 30 && ob.getX() < this.x + 25)) {
                         if (ob.getType() == 5)//砖块
                         {
-                            backGround.getObstacleList().remove(ob);//顶到特定移除砖块
+                            backGround.getObstacleList().remove(ob);//顶到特定移除砖块,此时ob为for循环到type=5的值
                             score += 1;
                         }
                         upTime = 0;
@@ -178,7 +183,7 @@ public class Mario implements Runnable {
                 } else { // 若 uptime=0，该下落了
                     fail();
                 }
-                this.y += ySpeed; // 不管什么状态减小 y
+                this.y += ySpeed; // 不管什么状态做下落处理，加上下落速度，ySpeed=0即不上升且不下落
             }
 
             // 控制线程睡眠时间
@@ -238,9 +243,9 @@ public class Mario implements Runnable {
             this.ySpeed = -10;//-10
             upTime = 10;//7 is bad.10 is OK
         }
-        //判断马里奥是否碰到旗子
-        if (backGround.isReach()) {
-            ySpeed = 0;
+        //马里奥碰到旗子后停止操作
+        if (backGround.getReach()) {
+            this.ySpeed = 0;
         }
     }
 

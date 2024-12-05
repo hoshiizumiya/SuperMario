@@ -7,9 +7,9 @@ import java.util.List;
 public class BackGround {
     private BufferedImage bgImage = null;//要显示的背景图片
 
-    private int sort;//判断是第几关
+    private int sort = 1;//判断是第几关
 
-    private boolean flag;//判断场景是否是最后一个场景
+    private boolean flag = false;//判断场景是否是最后一个场景
 
     private List<Obstacle> obstacleList = new ArrayList<Obstacle>();//结构
 
@@ -20,7 +20,7 @@ public class BackGround {
     //判断马里奥是否到达旗杆位置
     private boolean isReach = false;
     //判断旗子是否落地
-    private boolean isBase = false;
+    private boolean baseFlag = false;
     //存放敌人的集合成员变量
     private List<Enemy> enemyList = new ArrayList<>();
 
@@ -30,7 +30,7 @@ public class BackGround {
 
     public BackGround(int sort, boolean flag) {
         this.sort = sort;
-        this.flag = flag;
+        setFlag(flag);
         //给对应关卡赋值相应的背景图片
         if (flag) {
             bgImage = StaticValue.bg2;
@@ -207,7 +207,7 @@ public class BackGround {
         this.sort = sort;
     }
 
-    public boolean isFlag() {
+    public boolean getFlag() {
         return flag;
     }
 
@@ -239,20 +239,21 @@ public class BackGround {
         this.obstacleList = obstacleList;
     }
 
-    public boolean isReach() {
+    public boolean getReach() {
         return isReach;
     }
 
-    public void setReach(boolean reach) {
-        isReach = reach;
+    public void setReach(boolean isReach) {
+        this.isReach = isReach;
     }
 
-    public boolean isBase() {
-        return isBase;
+    public boolean getBaseFlag() {
+        return this.baseFlag;
     }
 
-    public void setBase(boolean base) {
-        isBase = base;
+    public void setBaseFlag(boolean baseFlag)//设置旗子到底情况
+    {
+        this.baseFlag = baseFlag;
     }
 
     public List<Enemy> getEnemyList() {
