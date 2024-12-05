@@ -30,7 +30,7 @@ public class BackGround {
 
     public BackGround(int sort, boolean flag) {
         this.sort = sort;
-        setFlag(flag);
+        this.flag = flag;
         //给对应关卡赋值相应的背景图片
         if (flag) {
             bgImage = StaticValue.bg2;
