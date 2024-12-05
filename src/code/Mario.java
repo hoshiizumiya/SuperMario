@@ -190,7 +190,7 @@ public class Mario implements Runnable {
                 if (upTime != 0) { // 在上升状态
                     upTime--;
                 } else { // 若 uptime=0，该下落了
-                    fail();
+                    fall();
                 }
                 this.y += ySpeed; // 不管什么状态做下落处理，加上下落速度，ySpeed=0即不上升且不下落
             }
@@ -250,7 +250,7 @@ public class Mario implements Runnable {
     }
 
     // 下落
-    public void fail() {
+    public void fall() {
         this.ySpeed = 10;
         if (status.contains("Left")) {
             status = "jump--Left";
