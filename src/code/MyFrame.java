@@ -6,14 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyFrame extends JFrame implements Runnable, KeyListener {
 
-    // 用于双缓冲的图像对象
+    // 用于双缓冲的图像对象，offScreenImage 用于双缓冲绘图，避免闪烁。
     private Image offScreenImage = null;
 
     // 背景对象
@@ -22,6 +21,8 @@ public class MyFrame extends JFrame implements Runnable, KeyListener {
     private static List<BackGround> allBg = new ArrayList<>();
     // 主角马里奥对象
     Mario mario = new Mario();
+
+    private TempScore tempScore;
 
     // 线程对象，用于定时更新和重绘界面
     Thread thread = new Thread(this);
@@ -67,6 +68,10 @@ public class MyFrame extends JFrame implements Runnable, KeyListener {
         backGround = allBg.get(0);
         mario = new Mario(5, 375);
         mario.setBackGround(backGround);
+
+        // 初始化 TempScore
+        tempScore = new TempScore();
+
         // 当前的线程启动处
         thread.start();
         try{
@@ -114,19 +119,18 @@ public class MyFrame extends JFrame implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        // 线程的主循环
+        // 线程的主循环：run 方法中不断调用 repaint 方法，每50毫秒刷新一次界面。
         while (true) {
             // 重绘界面
             repaint();
             //背景切换
-            if (mario.getX() >= 775)//逻辑实现错误，重新的实现
+            if (mario.getX() >= 775)
             {
                 int currentIndex = allBg.indexOf(backGround);
                 if (currentIndex < allBg.size() - 1) {
                     backGround = allBg.get(currentIndex + 1);
                     mario.setBackGround(backGround);
                     mario.setX(10);
-                    // 可能需要重置Y坐标到安全位置
                     mario.setY(375); // 或者根据新背景调整
                 }
             }
@@ -136,16 +140,28 @@ public class MyFrame extends JFrame implements Runnable, KeyListener {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            //判断马里奥是否死亡
-//            if (mario.isDeath()) {
-//                JOptionPane.showMessageDialog(this,"马里奥死亡!!!");
-//                System.exit(0);
-//            }
+            //判断马里奥是否死亡和恢复逻辑
+            if (mario.isDeath()) {
+                int n = JOptionPane.showConfirmDialog(this,"马里奥死亡!!!，是以退出，否从当前关卡开始继续游戏","马里奥",JOptionPane.YES_NO_OPTION);
+                if(n == JOptionPane.YES_OPTION)
+                {
+                    System.exit(0);
+                }
+                else
+                {
+                    mario.setX(10);
+                    mario.setY(375);
+                    mario.setDeath(false);
+                    mario.rightStop();
+                }
+            }
             //判断游戏是否结束
             if (mario.isOK()) {
                 JOptionPane.showMessageDialog(this,"恭喜你!成功通关了");
                 System.exit(0);
             }
+            tempScore.updateReferences(backGround, mario);
+            tempScore.tempScore(); // 调用 tempScore 方法
 
         }
     }
@@ -169,50 +185,29 @@ public class MyFrame extends JFrame implements Runnable, KeyListener {
         // 绘制背景图像到缓冲区
         graphics.drawImage(backGround.getBgImage(), 0, 0, this);//未更改
 
-
         //绘制敌人 添加绘制敌人的代码，放在绘制马里奥的代码之后，两者并列即可
         for (Enemy e : backGround.getEnemyList()) {
             graphics.drawImage(e.getShow(),e.getX(),e.getY(),this);
-        } //旗杆和城堡
-        graphics.drawImage(backGround.getGan(), 500, 220, this);
-        graphics.drawImage(backGround.getTower(), 620, 270, this);
+        }
         // 绘制所有障碍物到缓冲区
         for (Obstacle obstacle : backGround.getObstacleList()) {
             graphics.drawImage(obstacle.getShow(), obstacle.getX(), obstacle.getY(), this);
         }
-     // 绘制马里奥到缓冲区
+
+        //旗杆和城堡
+        graphics.drawImage(backGround.getGan(), 500, 220, this);
+        graphics.drawImage(backGround.getTower(), 620, 270, this);
+        // 绘制马里奥到缓冲区
         graphics.drawImage(mario.getShow(), mario.getX(), mario.getY(), this);
-
-
-
 
         //显示文字
         graphics.setColor(Color.BLACK);
-        graphics.setFont(new Font("黑体", Font.BOLD, 30));
+        graphics.setFont(new Font("微软雅黑", Font.BOLD, 20));
+        graphics.drawString("2336090071杨天泉", 300, 50);
+        graphics.setFont(new Font("微软雅黑", Font.BOLD, 30));
         graphics.drawString("当前的积分是：" + mario.getScore(), 300, 100);
 
         // 将缓冲区的内容绘制到屏幕上
         g.drawImage(offScreenImage, 0, 0, this);
     }
 }
-
-
-/*
-注释说明
-类和成员变量：
-MyFrame 类继承自 JFrame，实现了 Runnable 和 KeyListener 接口。
-offScreenImage 用于双缓冲绘图，避免闪烁。
-backGround 和 mario 分别表示背景和主角马里奥。
-thread 用于定时更新和重绘界面。
-键盘事件处理：
-keyPressed 和 keyReleased 方法分别处理按键按下和释放事件，控制马里奥的移动。
-keyTyped 方法在这里不需要处理。
-线程的主循环：
-run 方法中不断调用 repaint 方法，每50毫秒刷新一次界面。
-绘图方法：
-paint 方法重写了 JFrame 的 paint 方法，实现双缓冲绘图。
-检查并初始化 offScreenImage。
-获取 offScreenImage 的 Graphics 对象。
-清除缓冲区，绘制背景、马里奥、障碍物和花朵。
-将缓冲区的内容绘制到屏幕上。
- */
