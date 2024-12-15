@@ -48,7 +48,7 @@ public class Mario implements Runnable {
             boolean onObstacle = false;
 
             //判断马里奥是否到达旗杆的x位置
-            if (backGround.getFlag() && this.x >= 500)//条件：第三关（true)且达到位置
+            if (backGround.getFlag() && this.x >= 500)  //条件：第三关（true)且达到位置
             {
                 this.backGround.setReach(true);//发出到达信号给旗子
                 //Mario下落至完成的切换
@@ -63,7 +63,7 @@ public class Mario implements Runnable {
                 } else //Mario开始随旗下落
                 {
                     xSpeed = 0;
-                    System.out.println("x: " + x + ", y: " + y + ", status: " + status + ", xSpeed: " + xSpeed + ", ySpeed: " + ySpeed);
+//                    System.out.println("x: " + x + ", y: " + y + ", status: " + status + ", xSpeed: " + xSpeed + ", ySpeed: " + ySpeed);
                     if (y < 395)
                     {
                         this.y += 5;
@@ -73,7 +73,10 @@ public class Mario implements Runnable {
                         status = "stop--Right";
                     }
                 }
-            } // 遍历所有障碍物，判断是否与障碍物碰撞
+            }
+//            System.out.println(this.y);
+
+            // 遍历所有障碍物，判断是否与障碍物碰撞
                 for (int i = 0; i < backGround.getObstacleList().size(); i++) {
                     Obstacle ob = backGround.getObstacleList().get(i);
                     // 判断是否在障碍物上
@@ -201,6 +204,9 @@ public class Mario implements Runnable {
                 throw new RuntimeException(e);
             }
             onOb = onObstacle;
+
+
+
         }
     }
 
@@ -246,7 +252,7 @@ public class Mario implements Runnable {
         if (backGround.getReach()) {
             this.ySpeed = 0;
         }
-        System.out.println(ySpeed + "\n" + upTime + "\n");
+//        System.out.println(ySpeed + "\n" + upTime + "\n");
     }
 
     // 下落

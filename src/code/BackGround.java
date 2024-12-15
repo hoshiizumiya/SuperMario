@@ -177,13 +177,12 @@ public class BackGround {
                 }
                 temp += 30;
             }
-            //绘制旗杆
-            gan = StaticValue.gan;
             //绘制城堡
             tower = StaticValue.tower;
             //添加旗子到旗杆上
             obstacleList.add(new Obstacle(515, 220, 8, this));
-
+            //绘制旗杆
+            gan = StaticValue.gan;
             //绘制第三关的蘑菇敌人
             enemyList.add(new Enemy(150,385,true,1,this));
         }
@@ -237,6 +236,10 @@ public class BackGround {
 
     public void setObstacleList(List<Obstacle> obstacleList) {
         this.obstacleList = obstacleList;
+    }
+
+    public void addObstacleList(Obstacle obstacle) {
+        obstacleList.add(obstacle);
     }
 
     public boolean getReach() {
